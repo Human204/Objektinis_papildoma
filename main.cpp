@@ -5,30 +5,26 @@ void Skaitymas(map<string,zodziuinfo> &zodziai,std::stringstream &buf,vector<str
     int indeksas=0;
     while(!buf.eof()){
         buf>>zodis;
-        
-        // char raides[zodis.length()];
         vector<int> to_remove;
         if(zodis==" "&&zodis==""){
             zodis.clear();
             buf>>zodis;
         }
         if(urlcheck(zodis)){
-            saitai.push_back(zodis);
+            if(saito_idejimas(saitai,zodis))saitai.push_back(zodis);;
             zodis.clear();
             buf>>zodis;
         }
-        // zodis=tolower(zodis2);
         transform(zodis.begin(), zodis.end(), zodis.begin(), ::tolower);
-        // cout<<zodis<<" || ";
 
         for(int i=0;i<zodis.length();i++){
-            if((!isalnum(zodis[i])&&!isalnum(zodis[i+1]))||(!isalnum(zodis[i-1])&&!isalnum(zodis[i]))||(zodis[i]=='(')||(zodis[i]==')')){
+            // if((!isalnum(zodis[i])&&!isalnum(zodis[i+1]))||(!isalnum(zodis[i-1])&&!isalnum(zodis[i]))||(zodis[i]=='(')||(zodis[i]==')')){
+            if(ifremove(zodis,i)){
                 to_remove.push_back(i);
             }
         }
         int change=0;
         for(auto &i:to_remove){
-            // cout<<i<<" // "<<zodis[i]<<" ";
             zodis.erase(i-change,1);
             change++;
         }
@@ -45,10 +41,20 @@ void Skaitymas(map<string,zodziuinfo> &zodziai,std::stringstream &buf,vector<str
         }
         zodis.clear();
         to_remove.clear();
-        // cout<<'\n';
         indeksas++;
     }
+    zodziai.erase("");
 }
+
+bool ifremove(string &zodis,int &i){
+    
+    if((!isalnum(zodis[i])&&!isalnum(zodis[i+1]))) return true;
+    if((!isalnum(zodis[i-1])&&!isalnum(zodis[i])))return true;
+    if((zodis[i]=='(')||(zodis[i]==')'))return true;
+    if((!isalpha(zodis[i])&&!isalpha(zodis[i+1]))||(!isalpha(zodis[i])&&!isalpha(zodis[i-1])))return true;
+    return false;
+}
+
 void Rasymas(map<string,zodziuinfo> &zodziai,vector<string> &saitai){
     ofstream fout("o.txt");
     for(auto &it:zodziai){
@@ -79,14 +85,23 @@ bool urlcheck(string zodis){
     else return false;
 }
 
+bool saito_idejimas(vector<string> &saitai,string &zodis){
+    for(auto &it:saitai){
+        if(it==zodis)return false;
+    }
+    return true;
+}
 
 int main(){
     // setlocale(LC_ALL,"Lithuanian");
     map<string,zodziuinfo> zodziai;
     vector<string> saitai;
     ifstream fin;
+    string failas;
+    cout<<"Iveskite failo pavadinima: \n";
+    cin>>failas;
       try{
-        fin.open("i.txt");
+        fin.open(failas);
         if(!fin){
           throw std::runtime_error("Failo nera.");
         }
