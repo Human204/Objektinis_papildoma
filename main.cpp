@@ -18,7 +18,6 @@ void Skaitymas(map<string,zodziuinfo> &zodziai,std::stringstream &buf,vector<str
         transform(zodis.begin(), zodis.end(), zodis.begin(), ::tolower);
 
         for(int i=0;i<zodis.length();i++){
-            // if((!isalnum(zodis[i])&&!isalnum(zodis[i+1]))||(!isalnum(zodis[i-1])&&!isalnum(zodis[i]))||(zodis[i]=='(')||(zodis[i]==')')){
             if(ifremove(zodis,i)){
                 to_remove.push_back(i);
             }
