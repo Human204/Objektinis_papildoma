@@ -18,8 +18,12 @@ using std::endl;
 using std::string;
 using std::isalnum;
 
+struct zodziuinfo{
+    int pasikartojimai=0;
+    vector<int> indeksai;
+};
 
 
-
-void Skaitymas(map<string,int> &zodziai,std::stringstream &buf);
-void Rasymas(map<string,int> &zodziai);
+void Skaitymas(map<string,zodziuinfo> &zodziai,std::stringstream &buf,vector<string> &saitai);
+void Rasymas(map<string,zodziuinfo> &zodziai,vector<string> &saitai);
+bool urlcheck(string zodis);
