@@ -4,12 +4,19 @@ void Skaitymas(map<string,int> &zodziai,std::stringstream &buf){
     string zodis;
     while(!buf.eof()){
         buf>>zodis;
+        
         // char raides[zodis.length()];
         vector<char> to_remove;
+        cout<<zodis<<" || ";
         for(int i=0;i<zodis.length();i++){
-            if(!isalnum(zodis[i]))to_remove.push_back(zodis[i]);
+            if(!isalnum(zodis[i])){
+                // cout<<zodis[i]<<" ";
+                to_remove.push_back(zodis[i]);
+            }
         }
+        
         for(auto &i:to_remove){
+            cout<<i<<" // "<<zodis.find(i)<<" ";
             zodis.erase(zodis.find(i),zodis.find(i)+1);
         }
         // cout<<zodis<<endl;
@@ -20,6 +27,7 @@ void Skaitymas(map<string,int> &zodziai,std::stringstream &buf){
         }
         zodis.clear();
         to_remove.clear();
+        cout<<'\n';
     }
 }
 void Rasymas(map<string,int> &zodziai){
@@ -31,6 +39,7 @@ void Rasymas(map<string,int> &zodziai){
 
 
 int main(){
+    // setlocale(LC_ALL,"Lithuanian");
     map<string,int> zodziai;
     ifstream fin;
       try{

@@ -19,5 +19,7 @@ using std::string;
 using std::isalnum;
 
 
+
+
 void Skaitymas(map<string,int> &zodziai,std::stringstream &buf);
 void Rasymas(map<string,int> &zodziai);
