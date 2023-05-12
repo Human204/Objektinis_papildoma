@@ -1,17 +1,14 @@
 #include "lib.h"
 
+
 void Skaitymas(map<string,zodziuinfo> &zodziai,std::stringstream &buf,vector<string> &saitai){
     string zodis,zodis2;
     int indeksas=0;
+    
     while(!buf.eof()){
         buf>>zodis;
         vector<int> to_remove;
         if(zodis==" "&&zodis==""){
-            zodis.clear();
-            buf>>zodis;
-        }
-        if(urlcheck(zodis)){
-            if(saito_idejimas(saitai,zodis))saitai.push_back(zodis);;
             zodis.clear();
             buf>>zodis;
         }
@@ -54,14 +51,14 @@ bool ifremove(string &zodis,int &i){
     return false;
 }
 
-void Rasymas(map<string,zodziuinfo> &zodziai,vector<string> &saitai){
+void Rasymas(map<string,zodziuinfo> &zodziai,vector<string> &saitai,std::sregex_iterator &it,std::sregex_iterator &end){
     ofstream fout("o.txt");
     for(auto &it:zodziai){
         fout<<it.first<<" "<<it.second.pasikartojimai<<endl;
     }
     fout<<"\nSaitai: \n\n";
-    for(auto &it:saitai){
-        fout<<it<<endl;
+    for(;it!=end;it++){
+        fout<<it->str()<<endl;
     }
     ofstream fout2("table.txt");
     fout2<<"Zodziu indeksai: \n";
@@ -79,20 +76,8 @@ void Rasymas(map<string,zodziuinfo> &zodziai,vector<string> &saitai){
     }
 }
 
-bool urlcheck(string zodis){
-    if(zodis.compare(0,8,"https://")==0||zodis.compare(0,7,"http://")==0||zodis.compare(0,4,"www.")==0)return true;
-    else return false;
-}
-
-bool saito_idejimas(vector<string> &saitai,string &zodis){
-    for(auto &it:saitai){
-        if(it==zodis)return false;
-    }
-    return true;
-}
 
 int main(){
-    // setlocale(LC_ALL,"Lithuanian");
     map<string,zodziuinfo> zodziai;
     vector<string> saitai;
     ifstream fin;
@@ -113,8 +98,12 @@ int main(){
     std::stringstream buf;
     buf<<fin.rdbuf();
     fin.close();
+    string url_check=buf.str();
+    std::regex url_regex(R"((?:https?://)?(?:www\.)?([a-zA-Z0-9]+\.)+[a-zA-Z]{2,3}(?:\.[a-zA-Z]{2})?)");
+    std::sregex_iterator it(url_check.begin(), url_check.end(), url_regex);
+    std::sregex_iterator end;
     Skaitymas(zodziai,buf,saitai);
-    Rasymas(zodziai,saitai);
+    Rasymas(zodziai,saitai,it,end);
     
     
 }

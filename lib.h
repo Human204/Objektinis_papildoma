@@ -5,6 +5,7 @@
 #include<map>
 #include<fstream>
 #include<cctype>
+#include <regex>
 
 
 using std::cout;
@@ -19,6 +20,7 @@ using std::string;
 using std::isalnum;
 using std::isdigit;
 using std::isalpha;
+using std::regex;
 
 struct zodziuinfo{
     int pasikartojimai=0;
@@ -27,7 +29,7 @@ struct zodziuinfo{
 
 
 void Skaitymas(map<string,zodziuinfo> &zodziai,std::stringstream &buf,vector<string> &saitai);
-void Rasymas(map<string,zodziuinfo> &zodziai,vector<string> &saitai);
+void Rasymas(map<string,zodziuinfo> &zodziai,vector<string> &saitai,std::sregex_iterator &it,std::sregex_iterator &end);
 bool urlcheck(string zodis);
 bool saito_idejimas(vector<string> &saitai,string &zodis);
 bool ifremove(string &zodis,int &i);
